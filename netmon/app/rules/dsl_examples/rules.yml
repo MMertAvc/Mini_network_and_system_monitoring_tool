@@ -1,0 +1,6 @@
+- name: loss_gt0
+  expr: "avg(ping_loss_pct,5min) > 0"
+  severity: warning
+- name: http_down_and_loss
+  expr: "last(http_up)==0 && last(ping_loss_pct)>0"
+  severity: critical

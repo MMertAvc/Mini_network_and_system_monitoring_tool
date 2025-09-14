@@ -1,0 +1,10 @@
+python - <<'PY'
+from app.models.db import SessionLocal
+from app.models.core import Device, Check
+
+db=SessionLocal()
+for d in db.execute("select id, mgmt_ip from devices where enabled=true and mgmt_ip is not null").fetchall():
+    db.execute("insert into checks(device_id, ctype, params, interval_s, enabled) values (:d,'ping','{}',15,true) on conflict do nothing", {"d": d[0]})
+db.commit(); db.close()
+print("Ping checks created.")
+PY
